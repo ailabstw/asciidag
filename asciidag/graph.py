@@ -183,8 +183,15 @@ class Graph(object):  # noqa: E501, D104 pylint: disable=too-many-instance-attri
         nodes = sort_in_topological_order(list(once(walk_nodes(tips))))
         for node in nodes:
             self._update(node)
-            self._show_commit()
-            self.outfile.write(node.item)
+
+            for i, line in enumerate(node.item.split('\n')):
+                if i == 0:
+                    self._show_commit()
+                else:
+                    self.outfile.write('\n')
+                    self._show_padding()
+                self.outfile.write(line)
+
             if not self._is_commit_finished():
                 self.outfile.write('\n')
                 self._show_remainder()
